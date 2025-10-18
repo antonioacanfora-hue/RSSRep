@@ -2,7 +2,7 @@ name: Aggiorna feed Gazzettino
 
 on:
   schedule:
-    - cron: '0 * * * *'   # ogni ora
+    - cron: '0 * * * *'   # esegue ogni ora
   workflow_dispatch:       # permette di lanciare manualmente
 
 jobs:
@@ -33,4 +33,4 @@ jobs:
         git config --global user.email "github-actions[bot]@users.noreply.github.com"
         git add feeds/gazzettino/gazzettino_rss.xml
         git commit -m "Aggiornamento automatico feed" || echo "Nessuna modifica"
-        git push
+        git push https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git
