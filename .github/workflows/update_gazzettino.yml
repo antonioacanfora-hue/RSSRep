@@ -2,8 +2,8 @@ name: Aggiorna feed Gazzettino
 
 on:
   schedule:
-    - cron: '0 * * * *'   # esegue ogni ora
-  workflow_dispatch:       # permette di lanciare manualmente
+    - cron: '0 * * * *'   # ogni ora
+  workflow_dispatch:
 
 jobs:
   build:
@@ -24,8 +24,7 @@ jobs:
         pip install requests beautifulsoup4 feedgen
 
     - name: Run script
-      run: |
-        python feeds/gazzettino/generate_gazzettino_rss.py
+      run: python feeds/gazzettino/generate_gazzettino_rss.py
 
     - name: Commit updated feed
       run: |
@@ -33,4 +32,6 @@ jobs:
         git config --global user.email "github-actions[bot]@users.noreply.github.com"
         git add feeds/gazzettino/gazzettino_rss.xml
         git commit -m "Aggiornamento automatico feed" || echo "Nessuna modifica"
-        git push https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git
+        git push origin HEAD:main
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
