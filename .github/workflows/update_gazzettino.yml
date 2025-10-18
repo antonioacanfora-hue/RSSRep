@@ -2,7 +2,7 @@ name: Aggiorna feed Gazzettino
 
 on:
   schedule:
-    - cron: '0 * * * *'   # ogni ora
+    - cron: '0 * * * *'
   workflow_dispatch:
 
 jobs:
@@ -12,6 +12,8 @@ jobs:
     steps:
     - name: Checkout repository
       uses: actions/checkout@v3
+      with:
+        persist-credentials: true  # IMPORTANTISSIMO per push
 
     - name: Setup Python
       uses: actions/setup-python@v4
@@ -32,6 +34,5 @@ jobs:
         git config --global user.email "github-actions[bot]@users.noreply.github.com"
         git add feeds/gazzettino/gazzettino_rss.xml
         git commit -m "Aggiornamento automatico feed" || echo "Nessuna modifica"
-        git push origin HEAD:main
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        git push
+
